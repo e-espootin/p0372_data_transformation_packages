@@ -1,0 +1,13 @@
+# The main pipeline for taxitrip_dev_ingest
+resources:
+  pipelines:
+    taxitrip_dev_ingest_pipeline:
+      name: taxitrip_dev_ingest_pipeline
+      catalog: app_holozmo_dev
+      target: taxitrip_dev_ingest_${bundle.environment}
+      libraries:
+        - notebook:
+            path: ../src/dlt_pipeline.ipynb
+
+      configuration:
+        bundle.sourcePath: ${workspace.file_path}/src

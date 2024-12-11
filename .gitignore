@@ -1,0 +1,36 @@
+# pandas pipe
+pandas_pipe/.venv_pandas_pipe
+
+# perfect workflow
+perfect-workflow/.venv_perfect
+perfect-workflow
+
+# polars pipe
+polars_pipe/.venv_polars
+
+# dagster
+dagster
+
+# sklearn
+data-transformation-package_sklearn/.venv_p0372
+data-transformation-package_sklearn
+
+# databricks taxitrips
+databricks_taxitrips/taxitrip_dev_ingest/.venv_databricks_taxitrips
+databricks_taxitrips/taxitrip_dev_ingest/.databricks/
+databricks_taxitrips/taxitrip_dev_ingest/.venv/
+databricks_taxitrips/taxitrip_dev_ingest/.venv_311/
+databricks_taxitrips/taxitrip_dev_ingest/build/
+databricks_taxitrips/taxitrip_dev_ingest/dist/
+databricks_taxitrips/taxitrip_dev_ingest/__pycache__/
+databricks_taxitrips/taxitrip_dev_ingest/*.egg-info
+databricks_taxitrips/taxitrip_dev_ingest/scratch/**
+databricks_taxitrips/taxitrip_dev_ingest/!scratch/README.md
+
+# databricks_taxitrips_dlt
+databricks_taxitrips_dlt/.databricks/
+databricks_taxitrips_dlt
+
+
+#
+_data-transformation-package_pandas
