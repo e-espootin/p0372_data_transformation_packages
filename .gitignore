@@ -1,5 +1,7 @@
 # pandas pipe
 pandas_pipe/.venv_pandas_pipe
+pandas_pipe/.DS_Store
+
 
 # perfect workflow
 perfect-workflow/.venv_perfect
@@ -26,7 +28,7 @@ databricks_taxitrips/taxitrip_dev_ingest/__pycache__/
 databricks_taxitrips/taxitrip_dev_ingest/*.egg-info
 databricks_taxitrips/taxitrip_dev_ingest/scratch/**
 databricks_taxitrips/taxitrip_dev_ingest/!scratch/README.md
-
+databricks_taxitrips/taxitrip_dev_ingest/.DS_Store
 # databricks_taxitrips_dlt
 databricks_taxitrips_dlt/.databricks/
 databricks_taxitrips_dlt
