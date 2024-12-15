@@ -80,8 +80,8 @@ config = {
         'driver_last_name'],
     "source_table" : "app_holozmo_dev.taxitrip_dev_ingest_dev.taxitrips_dlt",
     "target_table" : "app_holozmo_dev.taxitrip_dev_ingest_dev.taxitrips_dlt_gold",
-    "s3_path_gold" : "s3://databricks-workspace-stack-e7e6f-bucket/unity-catalog/taxi-data-dev_gold",
-    "s3_path_silver" : "s3://databricks-workspace-stack-e7e6f-bucket/unity-catalog/taxi-data-dev_silver",
+    "s3_path_gold" : "s3://databricks-workspace-stack-e7e6f-bucket/unity-catalog/taxi_data_dev_gold",
+    "s3_path_silver" : "s3://databricks-workspace-stack-e7e6f-bucket/unity-catalog/taxi_data_dev_silver",
 }
 
 # def Retrieve the AWS credentials from the secret scope
@@ -156,6 +156,7 @@ def load_data(spark: SparkSession, last_processed_timestamp: int) -> DataFrame:
         else:
             df = spark.read.format("delta").table(config["source_table"])
 
+        print(f"Data loaded: {df.count()} rows")
         return df
 
     except Nothing_To_Load as e:
@@ -296,6 +297,15 @@ def busy_area(df: DataFrame) -> DataFrame:
         print(f"Error in busy_area: {e}")
         raise
 
+# route >> pickup_zip, '-', dropoff_zip
+def route(df: DataFrame) -> DataFrame:
+    try:
+        df = df.withColumn("route", concat(col("PULocationID"), lit("-"), col("DOLocationID")))
+        return df
+    except Exception as e:
+        print(f"Error in route: {e}")
+        raise
+
 ################## Aggregated Features ##################
 
 # Passenger Loyalty , aggregate the number of trips for each passenger , filter with email of passenger
@@ -352,6 +362,7 @@ def transform_silver_data(spark: SparkSession) -> DataFrame:
             .transform(is_rush_hour)
             .transform(average_speed)
             ## .transform(busy_area)
+            .transform(route)
             .transform(passenger_loyalty)
             .transform(driver_experience_level)
         )
@@ -360,7 +371,7 @@ def transform_silver_data(spark: SparkSession) -> DataFrame:
         df.write.format("delta").mode("append").saveAsTable(config["target_table"])
 
         # save df as parquet into silver path with filename df_timestamp.parquet
-        #df.write.format("parquet").mode("overwrite").save(f"{config['s3_path_gold']}/df_{int(time.time())}.parquet")
+        df.write.format("parquet").mode("append").save(f"{config['s3_path_gold']}/df_gold_layer.parquet")
 
         # display(df)
         return df

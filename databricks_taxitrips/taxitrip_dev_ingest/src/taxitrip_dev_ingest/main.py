@@ -51,7 +51,7 @@ config = {
     "s3_path" : "s3a://databricks-workspace-stack-e7e6f-bucket/unity-catalog/taxi-data-dev",
     "processed_path" : "s3a://databricks-workspace-stack-e7e6f-bucket/unity-catalog/taxi-data-dev-processed",
     "target_table" : "app_holozmo_dev.taxitrip_dev_ingest_dev.taxitrips_dlt",
-    "s3_path_silver" : "s3://databricks-workspace-stack-e7e6f-bucket/unity-catalog/taxi-data-dev_silver",
+    "s3_path_silver" : "s3://databricks-workspace-stack-e7e6f-bucket/unity-catalog/taxi_data_dev_silver",
 }
 
 # def Retrieve the AWS credentials from the secret scope
@@ -323,8 +323,9 @@ def get_taxis(spark: SparkSession) -> DataFrame:
         df.write.format("delta").mode("append").saveAsTable(config["target_table"])
 
         # save df as parquet into silver path with filename df_timestamp.parquet
-        df.write.format("parquet").mode("overwrite").save(f"{config['s3_path_silver']}/df_{int(time.time())}.parquet")
-
+        df.write.format("parquet").mode("append").save(f"{config['s3_path_silver']}/df_{int(time.strftime('%H'))}.parquet")
+        df.write.format("csv").mode("overwrite").save(f"{config['s3_path_silver']}/df_{int(time.strftime('%H_%M'))}.csv") # todo will remove
+        
         # move files to processed path
         move_files(spark, config["files"], config["processed_path"])
 

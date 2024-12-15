@@ -6,4 +6,8 @@ __pycache__/
 .venv/
 .venv_311/
 scratch/**
-!scratch/README.md
+#!scratch/README.md
+resources/taxitrip_dev_ingest.pipeline.yml
+src/DW/**
+src/taxitrip_dev_ingest/ingest_data/**
+src/dlt_pipeline.ipynb
